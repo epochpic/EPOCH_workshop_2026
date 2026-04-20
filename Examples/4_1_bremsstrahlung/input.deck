@@ -1,0 +1,65 @@
+begin:control
+  nx = 256
+  npart = nx * 256
+  t_end = 2.0e-11
+  x_min = 0
+  x_max = 5.50e-3
+end:control
+
+begin:bremsstrahlung
+  use_bremsstrahlung = T 
+  start_time = 0
+  produce_photons = T
+  photon_energy_min = 1 * kev
+  photon_weight = 1.0 
+  photon_dynamics = F
+  use_bremsstrahlung_recoil = T 
+  use_plasma_screening = F
+end:bremsstrahlung
+
+begin:boundaries
+  bc_x_min = simple_laser
+  bc_x_max = simple_laser
+end:boundaries
+
+begin:species
+  name = Electron_Beam
+  frac = 0.8
+  dump = T
+
+  # Put 10^5 electrons in the first three cells in x
+  rho = 1.0e5 * nx / (x_max - x_min)
+  rho = if (x lt 3*x_max/nx, density(Electron_Beam), 0)
+
+  drift_x = 5.344e-19  # Momentum: 100 MeV/c = 5.3443e-20 kg.m/s
+
+  identify:electron
+end:species
+
+begin:species
+  name = Aluminium
+  atomic_number = 13
+  mass = 49218
+  charge = 0
+  
+  rho = 6.022e28
+  frac = 0.2
+  immobile = T
+  dump = F
+end:species
+
+begin:species
+  name = Photon
+  npart = 0
+  dump = T
+  identify:brem_photon
+end:species
+
+begin:output
+  dt_snapshot = t_end
+  px = always
+  py = always
+  pz = always
+  particle_weight = always
+  number_density = always + species
+end:output

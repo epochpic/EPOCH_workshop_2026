@@ -1,0 +1,45 @@
+begin:control
+    # Define 1D domain
+    nx = 500       # Cell count
+    x_min = 0      # [m]
+    x_max = 25e-6  # [m]
+    
+    stdout_frequency = 10  # How often to we print status to terminal?
+    
+    t_end = 10.0e-15  # How long does ths simulation run for? [s]
+    
+    npart = 50 * nx  # Number of macro-particles to load
+end:control
+
+begin:boundaries
+    bc_x_min = open
+    bc_x_max = open
+end:boundaries
+
+begin:constant
+    # Create a new variable: electron kinetic energy [J]
+    electron_ke = 1.0e6 * ev
+    
+    # Calculate corresponding drift momentum
+    electron_energy = electron_ke + me * c^2
+    electron_px = sqrt((electron_energy/c)^2 - (me*c)^2)
+end:constant
+
+begin:species
+    # Identify species
+    name = Electron
+    mass = 1.0
+    charge = -1.0
+    
+    frac = 1.0  # Fraction of macro-particles going to this species
+    
+    # Initialise solid block between 10um and 11um
+    drift_x = electron_px
+    density = if (x gt 10.0e-6, 1e28, 0)
+    density = if (x gt 11.0e-6, 0, density(Electron))
+end:species
+
+begin:output
+    dt_snapshot = 1.0e-15
+    number_density = always
+end:output

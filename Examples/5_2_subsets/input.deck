@@ -1,0 +1,58 @@
+begin:control
+    nx = 500
+    ny = 250
+    t_end = 100.0e-15
+    x_min = 0
+    x_max = 25e-6
+    y_min = 0
+    y_max = 12.5e-6
+    stdout_frequency = 100
+    npart = 50 * (5.0e-6/(x_max-x_min)) * nx * ny
+end:control
+
+begin:boundaries
+    bc_x_min = open
+    bc_x_max = open
+    bc_y_min = open
+    bc_y_max = open
+end:boundaries
+
+begin:species
+    name = Electron
+    mass = 1.0
+    charge = -1.0
+    frac = 0.8
+    density = if (x gt 15.0e-6, 1.0e24, 0)
+    density = if (x gt 20.0e-6, 0, density(Electron))
+    drift_x = if (x lt 16.0e-6, 1.0e-22, 0)
+    temp_ev = 1000
+end:species
+
+begin:species
+    name = Carbon
+    mass = 22033.0
+    charge = 6.0
+    frac = 0.2
+    density = density(Electron) / 6
+    temp_ev = 1000
+end:species
+
+begin:subset
+    name = Refluxers
+    x_max = 16.0e-6
+    persist_start_time = 0
+    include_species:Electron
+end:subset
+
+begin:subset
+   name = Target
+   x_min = 15.0e-6
+   x_max = 20.0e-6
+end:subset
+
+begin:output
+    dt_snapshot = t_end / 10
+    px = Refluxers
+    ex = Target
+    dt_average = 1.0e-15
+end:output

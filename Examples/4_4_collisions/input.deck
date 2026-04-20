@@ -1,0 +1,45 @@
+begin:control
+  nx = 500
+  npart = nx * 250
+  t_end = 300.0e-15
+  x_min = 0
+  x_max = 25.0e-6
+  stdout_frequency = 10
+end:control
+
+begin:collisions
+   use_collisions = T
+   use_nanbu = T
+   coulomb_log = auto
+   collide = all
+   coll_n_step = 10
+end:collisions
+
+begin:boundaries
+  bc_x_min = periodic
+  bc_x_max = periodic
+end:boundaries
+
+begin:species
+  name = Electron_cold
+  frac = 0.5
+  rho = 1.0e28
+  temp_ev = 500
+  identify:electron
+end:species
+
+begin:species
+  name = Electron_hot
+  frac = 0.5
+  rho = 1.0e28
+  temp_ev = 1.0e3
+  identify:electron
+end:species
+
+begin:output
+  dt_snapshot = t_end/20
+  px = always
+  py = always
+  pz = always
+  weight = always
+end:output

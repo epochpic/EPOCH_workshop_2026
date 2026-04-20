@@ -1,0 +1,60 @@
+begin:control
+    nx = 500
+    ny = 500
+    t_end = 1.0e-15
+    x_min = 0
+    x_max = 25e-6
+    y_min = 0
+    y_max = 25e-6
+    stdout_frequency = 100
+    npart = 50 * (5.0e-6/(x_max-x_min)) * nx * ny
+end:control
+
+begin:boundaries
+    bc_x_min = open
+    bc_x_max = open
+    bc_y_min = open
+    bc_y_max = open
+end:boundaries
+
+begin:constant
+    x0 = 15.0e-6
+    y0 = 12.5e-6
+    theta = 30.0 / 180.0 * pi
+    x_rot =  (x-x0)*cos(theta) + (y-y0)*sin(theta)
+    y_rot = -(x-x0)*sin(theta) + (y-y0)*cos(theta)
+end:constant
+
+begin:species
+    name = Electron
+    mass = 1.0
+    charge = -1.0
+    frac = 0.8
+    density = if (x_rot gt 0.0, 1.0e24, 0)
+    density = if (x_rot gt 5.0e-6, 0, density(Electron))
+    temp_ev = 1000
+end:species
+
+begin:constant
+    x_front = 15.0e-6
+    circle_radius = 2.0e-6
+    y_r = 2.0 * circle_radius
+    y_f = 2.0*((y / y_r) - floor(y / y_r))-1.0
+end:constant
+
+begin:species
+    name = Carbon
+    mass = 22033.0
+    charge = 6.0
+    frac = 0.2
+    density = if ((x-x_front)^2 + (y_f * circle_radius)^2 lt circle_radius^2,\
+                  1.0e24, 0)
+    density = if (x gt x_front and x lt (x_front + 5.0e-6), \
+                  1.0e24, density(Carbon))
+    temp_ev = 1000
+end:species
+
+begin:output
+    dt_snapshot = t_end
+    number_density = always + species
+end:output

@@ -1,0 +1,33 @@
+begin:control
+  nx = 128
+  ny = 32
+  nparticles = nx * ny * 64
+  t_end = 100.0e-15
+  x_min = -3.0e-6
+  x_max = 20.0e-6
+  y_min = -3.0e-6
+  y_max = 3.0e-6
+  stdout_frequency = 10
+end:control
+
+begin:boundaries
+  bc_x_min = open
+  bc_x_max = open
+  bc_y_min = open
+  bc_y_max = open
+end:boundaries
+
+begin:species
+  name = Electron
+  frac = 1
+  temperature = 10 * kev
+  number_density = if (x gt 0 and x lt 2.0e-6 and abs(y) lt 1.0e-6, 1.0e29, 0)
+  identify:electron
+end:species
+
+begin:output
+  dt_snapshot = t_end / 5
+  ey = always
+  dt_average = 5.0e-15
+  ex = always + average
+end:output

@@ -1,0 +1,44 @@
+begin:control
+    nx = 500
+    ny = 500
+    t_end = 10.0e-15
+    x_min = 0
+    x_max = 25e-6
+    y_min = 0
+    y_max = 25e-6
+    stdout_frequency = 100
+end:control
+
+begin:boundaries
+    bc_x_min = open
+    bc_x_max = open
+    bc_y_min = open
+    bc_y_max = open
+end:boundaries
+
+begin:species
+    name = Electron
+    mass = 1.0
+    charge = -1.0
+    npart = 1e5
+    density = if (x lt 2.0e-6, 1.0e10, 0)
+    density = if (y lt 10.0e-6, 0, density(Electron))
+    density = if (y gt 11.0e-6, 0, density(Electron))
+    temp_ev = 1e3
+    drift_x = 5.0e-22
+end:species
+
+begin:output
+    dt_snapshot = t_end
+    particle_probes = always
+end:output
+
+begin:probe
+   name = Electron_probe
+   point = (4.0e-6, 0.0)
+   normal = (1.0, 0.0)
+   ek_min = 0.0
+   ek_max = -1.0
+   include_species:Electron
+   dumpmask = always
+end:probe

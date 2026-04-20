@@ -1,0 +1,52 @@
+begin:control
+    nx = 500
+    ny = 500
+    t_end = 1.0e-15
+    x_min = 0
+    x_max = 25e-6
+    y_min = 0
+    y_max = 25e-6
+    stdout_frequency = 100
+end:control
+
+begin:boundaries
+    bc_x_min = open
+    bc_x_max = open
+    bc_y_min = open
+    bc_y_max = open
+end:boundaries
+
+begin:species
+    name = Electron_temp
+    mass = 1.0
+    charge = -1.0
+    npart = 5 * nx * ny
+    density = 1.0e24
+    temp_ev = 1000
+end:species
+
+begin:species
+    name = Electron_temp_drift
+    mass = 1.0
+    charge = -1.0
+    npart = 5 * nx * ny
+    density = 1.0e24
+    temp_ev = 1000
+    drift_x = 1.0e-22
+end:species
+
+begin:species
+    name = Electron_user
+    mass = 1.0
+    charge = -1.0
+    npart = 5 * nx * ny
+    density = 1.0e24
+    dist_fn = px / 1.0e-22
+    dist_fn_px_range = (0, 1.0e-22)
+end:species
+
+begin:output
+    dt_snapshot = t_end
+    px = always
+    weight = always
+end:output

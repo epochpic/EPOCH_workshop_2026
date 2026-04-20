@@ -1,0 +1,55 @@
+begin:control
+  nx = 500
+  npart = nx * 2500
+  t_end = 50.0e-15
+  x_min = 0
+  x_max = 25.0e-6
+  stdout_frequency = 10
+end:control
+
+begin:qed
+  use_qed = T
+  produce_photons = T
+  photon_energy_min = 50 * kev
+  produce_pairs = T
+  photon_dynamics = T
+end:qed
+
+begin:boundaries
+  bc_x_min = simple_laser
+  bc_x_max = open
+end:boundaries
+
+begin:laser
+  boundary = x_min
+  intensity_w_cm2 = 2.0e23
+  lambda = 1.0e-6
+end:laser
+
+begin:species
+  name = Photon_Beam
+  frac = 1
+  rho = if (x gt 20.0e-6, 1.0e10, 0)
+
+  drift_x = -100.0e6 * ev / c
+
+  identify:photon
+end:species
+
+begin:species
+  name = Electron
+  frac = 0
+  identify:electron
+end:species
+
+begin:species
+  name = Positron
+  frac = 0
+  identify:positron
+end:species
+
+begin:output
+  dt_snapshot = t_end/20
+  ey = always
+  number_density = always + species
+end:output
