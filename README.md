@@ -1,4 +1,6 @@
-# EPOCH_workshop_2026
+EPOCH Workshop 2026
+===================
+
 This repository contains slides and demonstration input decks for a 2026 EPOCH workshop given at the University of York. The content includes theory and examples on the following features of the code:
 
 - The field solver
