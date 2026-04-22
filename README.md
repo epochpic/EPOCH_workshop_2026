@@ -24,7 +24,10 @@ A section of the workshop is dedicated to running the code on York's cluster com
 Visualisation
 -------------
 
-In this workshop, SDF files will be read using the Python sdf-xarray library, developed by the University of York
+In this workshop, SDF files will be read using the Python [`sdf-xarray`](https://sdf-xarray.readthedocs.io) project, developed by the University of York.
+
+The visualisation resources and Python plotting scripts can be found on the sdf-xarray documentation under the section
+titled "EPOCH Workshop 2026".
 
 Credits
 -------
