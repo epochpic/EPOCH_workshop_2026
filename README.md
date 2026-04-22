@@ -16,11 +16,6 @@ This repository contains slides and demonstration input decks for a 2026 EPOCH w
 - Collisions
 - Large-scale running
 
-A section of the workshop is dedicated to running the code on York's cluster computer, Viking.
-
-- Installing EPOCH on Viking
-- Running a Viking test simulation
-
 Visualisation
 -------------
 
@@ -34,7 +29,7 @@ Credits
 
 EPOCH slides: Stuart Morris
 
-SDF-xarray and Viking slides: Joel Adams
+sdf-xarray: Joel Adams
 
 Current EPOCH developers (Warwick): Keith Bennet, Stuart Morris, Tom Goffrey, Tony Arber
 
